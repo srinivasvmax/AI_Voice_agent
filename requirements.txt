@@ -1,0 +1,14 @@
+pipecat-ai[silero]
+openai-whisper
+coqui-tts
+sounddevice
+soundfile
+numpy
+python-dotenv
+torch
+requests
+scipy
+fastapi
+uvicorn[standard]
+python-multipart
+pydub

@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+virtual/
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Model cache (will be mounted as volume)
+models/.cache/
+
+# Temporary audio files
+*.wav
+*.webm
+*.mp3
+*.ogg
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Distribution
+build/
+dist/
+*.egg-info/
+
+# Documentation
+README*.md
+
+# Batch files
+*.bat
