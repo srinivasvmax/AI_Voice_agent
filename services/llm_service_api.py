@@ -8,12 +8,18 @@ class LLMService:
         print(f"Using llama.cpp server at {base_url}")
         print("✅ LLM service configured (make sure llama.cpp server is running)")
     
-    def generate_response(self, user_input, language="en"):
-        """Generate response using llama.cpp server"""
+    def generate_response(self, user_input, language="en", max_tokens=512):
+        """Generate response using llama.cpp server
+        
+        Args:
+            user_input: User's question/input
+            language: Language code (en/hi/te)
+            max_tokens: Maximum response length (default 512, ~300-400 words)
+        """
         lang_instructions = {
-            "en": "You are a helpful voice assistant. Give concise, natural responses in English.",
-            "hi": "आप एक सहायक वॉयस असिस्टेंट हैं। हिंदी में संक्षिप्त, स्वाभाविक उत्तर दें।",
-            "te": "మీరు సహాయక వాయిస్ అసిస్టెంట్. తెలుగులో సంక్షిప్త, సహజ ప్రతిస్పందనలు ఇవ్వండి।"
+            "en": "You are a helpful voice assistant. Give clear, natural responses in English. Be informative but conversational. You can use English words naturally when needed.",
+            "hi": "आप एक सहायक वॉयस असिस्टेंट हैं। हिंदी में स्पष्ट, स्वाभाविक उत्तर दें। जानकारीपूर्ण लेकिन बातचीत के अंदाज में जवाब दें। अगर जरूरी हो तो English शब्द भी इस्तेमाल कर सकते हैं।",
+            "te": "మీరు సహాయక వాయిస్ అసిస్టెంట్. తెలుగులో స్పష్టమైన, సహజ ప్రతిస్పందనలు ఇవ్వండి. సమాచారంతో కూడిన కానీ సంభాషణ శైలిలో సమాధానం ఇవ్వండి. అవసరమైతే English పదాలు కూడా వాడవచ్చు।"
         }
         
         system_msg = lang_instructions.get(language, lang_instructions["en"])
@@ -30,11 +36,12 @@ class LLMService:
                 f"{self.base_url}/completion",
                 json={
                     "prompt": prompt,
-                    "n_predict": 256,
+                    "n_predict": max_tokens,  # Configurable token limit
                     "temperature": 0.7,
-                    "stop": ["<|eot_id|>"]
+                    "stop": ["<|eot_id|>"],
+                    "n_threads": 4  # Use 4 CPU threads for faster processing
                 },
-                timeout=120  # Increased to 2 minutes for slower systems
+                timeout=300  # Increased to 5 minutes for slower CPUs
             )
             
             if response.status_code == 200:

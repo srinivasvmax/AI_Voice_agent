@@ -358,14 +358,19 @@ async def process_audio(file: UploadFile = File(...)):
         print("🔊 Generating speech...")
         import time
         output_file = f"response_{int(time.time())}.wav"
-        tts_service.speak(
+        tts_success = tts_service.speak(
             response, 
             output_file=output_file, 
             speaker_wav=audio_file, 
             language=detected_lang, 
             play_audio=False
         )
-        print(f"✅ Speech saved to {output_file}")
+        
+        if tts_success:
+            print(f"✅ Speech saved to {output_file}")
+        else:
+            print(f"❌ Speech generation failed!")
+            output_file = None
         
         return {
             "transcript": user_text,
@@ -390,8 +395,13 @@ async def get_audio(filename: str):
     """Serve generated audio files"""
     file_path = Path(filename)
     if file_path.exists():
-        return FileResponse(filename, media_type="audio/wav")
-    return {"error": "File not found"}
+        print(f"✅ Serving audio file: {filename}")
+        return FileResponse(str(file_path), media_type="audio/wav")
+    else:
+        print(f"❌ Audio file not found: {filename}")
+        print(f"   Current directory: {Path.cwd()}")
+        print(f"   Looking for: {file_path.absolute()}")
+        return {"error": "File not found"}
 
 @app.on_event("shutdown")
 async def shutdown():

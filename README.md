@@ -45,6 +45,7 @@ python web_app.py
 ## Documentation
 
 - [Setup Guide](docs/README_SETUP.md) - Detailed installation and configuration
+- [Batch Processing](docs/README_BATCH.md) - Process multiple audio files automatically
 - [Docker Guide](docs/README_DOCKER.md) - Containerized deployment (if available)
 
 ## Requirements

@@ -44,3 +44,7 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+
+temp/
+output/
